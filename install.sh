@@ -1,4 +1,9 @@
+```bash
 #!/bin/bash
+
+# ===============================
+#        ZYNOX INSTALLER
+# ===============================
 
 blueprint_menu() {
 
@@ -28,18 +33,16 @@ clear
 
 echo "╔══════════════════════════════════════════════════════════╗"
 echo "║                 ⚡ BLUEPRINT CONTROL HUB ⚡                ║"
-echo "║           Minimal • Clean • High Performance              ║"
+echo "║             Minimal • Clean • High Performance            ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""
 
-echo "SELECT AN OPTION:"
+echo "[1] 🚀 Install Blueprint 1"
+echo "[2] ⚡ Install Blueprint 2 (Fresh Rebuild)"
+echo "[3] 🛠 Auto Fix / Repair"
+echo "[4] 🛠 hyperv1"
 echo ""
-echo "[1] Install Blueprint 1"
-echo "[2] Install Blueprint 2 (Fresh Rebuild)"
-echo "[3] Auto Fix / Repair"
-echo "[4] hyperv1"
-echo ""
-echo "[0] Exit Panel"
+echo "[0] Exit"
 echo ""
 
 read -p "👉 Enter your choice: " tool
@@ -47,27 +50,35 @@ read -p "👉 Enter your choice: " tool
 case $tool in
 
 1)
-echo "Installing Blueprint 1..."
-# command example
-bash <(curl -s https://example.com/blueprint1.sh)
+echo "Installing Blueprint..."
+bash <(curl -s https://raw.githubusercontent.com/BlueprintFramework/framework/main/install.sh)
 read -p "Press enter..."
 ;;
 
 2)
-echo "Installing Blueprint 2..."
-bash <(curl -s https://example.com/blueprint2.sh)
+echo "Fresh Rebuilding Panel..."
+cd /var/www/pterodactyl
+php artisan down
+git pull
+composer install --no-dev --optimize-autoloader
+php artisan migrate --seed --force
+php artisan up
 read -p "Press enter..."
 ;;
 
 3)
-echo "Running Auto Fix..."
-bash <(curl -s https://example.com/repair.sh)
+echo "Running Repair..."
+cd /var/www/pterodactyl
+php artisan optimize
+php artisan view:clear
+php artisan cache:clear
+php artisan config:clear
 read -p "Press enter..."
 ;;
 
 4)
-echo "Installing HyperV1..."
-bash <(curl -s https://example.com/hyperv1.sh)
+echo "Installing hyperv1..."
+bash <(curl -s https://raw.githubusercontent.com/hyperv1/install/main/install.sh)
 read -p "Press enter..."
 ;;
 
@@ -91,12 +102,12 @@ do
 clear
 
 echo "=============================================="
-echo "                 MAIN MENU"
+echo "                 THEME MANAGER"
 echo "=============================================="
 echo "1) Nebula (Auto Install)"
 echo "2) Euphoria (Auto Install)"
-echo "3) Uninstall"
-echo "4) Add Tool (Auto Install)"
+echo "3) Uninstall Themes"
+echo "4) Add Tool"
 echo "0) Exit"
 echo "=============================================="
 
@@ -106,25 +117,32 @@ case $theme in
 
 1)
 echo "Installing Nebula Theme..."
-bash <(curl -s https://example.com/nebula.sh)
+cd /var/www/pterodactyl
+git clone https://github.com/NebulaTheme/pterodactyl nebula
+bash nebula/install.sh
 read -p "Press enter..."
 ;;
 
 2)
 echo "Installing Euphoria Theme..."
-bash <(curl -s https://example.com/euphoria.sh)
+cd /var/www/pterodactyl
+git clone https://github.com/EuphoriaTheme/pterodactyl euphoria
+bash euphoria/install.sh
 read -p "Press enter..."
 ;;
 
 3)
-echo "Removing Themes..."
+echo "Removing themes..."
 rm -rf /var/www/pterodactyl/resources/themes/*
+php artisan view:clear
+echo "Themes removed."
 read -p "Press enter..."
 ;;
 
 4)
-echo "Installing Theme Tools..."
-bash <(curl -s https://example.com/themetool.sh)
+echo "Installing theme tools..."
+npm install
+npm run build
 read -p "Press enter..."
 ;;
 
@@ -154,27 +172,29 @@ esac
 done
 }
 
-# MAIN MENU
+# ===============================
+#        MAIN MENU
+# ===============================
 
 while true
 do
 clear
 
-echo " ██████╗ ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗      ██╗  ██╗██╗   ██╗██████╗ "
-echo "██╔════╝██╔═══██╗██╔══██╗██║████╗  ██║██╔════╝      ██║  ██║██║   ██║██╔══██╗"
-echo "██║     ██║   ██║██║  ██║██║██╔██╗ ██║██║  ███╗     ███████║██║   ██║██████╔╝"
-echo "██║     ██║   ██║██║  ██║██║██║╚██╗██║██║   ██║     ██╔══██║██║   ██║██╔══██╗"
-echo "╚██████╗╚██████╔╝██████╔╝██║██║ ╚████║╚██████╔╝     ██║  ██║╚██████╔╝██████╔╝"
-echo " ╚═════╝ ╚═════╝ ╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝      ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ "
+echo "███████╗██╗   ██╗███╗   ██╗ ██████╗ ██╗  ██╗"
+echo "╚══███╔╝╚██╗ ██╔╝████╗  ██║██╔═══██╗╚██╗██╔╝"
+echo "  ███╔╝  ╚████╔╝ ██╔██╗ ██║██║   ██║ ╚███╔╝ "
+echo " ███╔╝    ╚██╔╝  ██║╚██╗██║██║   ██║ ██╔██╗ "
+echo "███████╗   ██║   ██║ ╚████║╚██████╔╝██╔╝ ██╗"
+echo "╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝"
+
 echo ""
-echo "──────────────────────────────────────────────────────────"
-echo "            ⚡ ZYNOX DEPLOYMENT SYSTEM ⚡"
-echo "──────────────────────────────────────────────────────────"
+echo "⚡ ZYNOX DEPLOYMENT SYSTEM ⚡"
 echo ""
+
 echo "DEPLOYMENT SERVICES"
-echo "[1] VPS       [5] Theme"
-echo "[2] Panel     [6] Edit"
-echo "[3] Wings     [7] Container"
+echo "[1] VPS       [5] Theme / Blueprint"
+echo "[2] Panel"
+echo "[3] Wings"
 echo ""
 echo "MAINTENANCE"
 echo "[4] Toolbox"
@@ -182,17 +202,18 @@ echo ""
 echo "[0] Shutdown"
 echo ""
 
-read -p "➜ Command (1-7): " option
+read -p "➜ Command: " option
 
 case $option in
 
 1)
-echo "VPS Setup Coming Soon"
+echo "Updating VPS..."
+apt update && apt upgrade -y
 read -p "Press enter..."
 ;;
 
 2)
-echo "Installing Pterodactyl Panel..."
+echo "Installing Panel..."
 bash <(curl -s https://pterodactyl-installer.se)
 read -p "Press enter..."
 ;;
@@ -205,21 +226,12 @@ read -p "Press enter..."
 
 4)
 echo "Opening Toolbox..."
-apt update && apt upgrade -y
+apt install htop nano curl wget -y
 read -p "Press enter..."
 ;;
 
 5)
 blueprint_menu
-;;
-
-6)
-nano /etc/pterodactyl/config.yml
-;;
-
-7)
-docker ps
-read -p "Press enter..."
 ;;
 
 0)
@@ -234,3 +246,4 @@ sleep 2
 
 esac
 done
+```
